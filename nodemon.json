@@ -1,0 +1,6 @@
+{
+  "ignore": ["client/**/*.js", "public/**/*"],
+  "execMap": {
+    "js": "babel-node"
+  }
+}

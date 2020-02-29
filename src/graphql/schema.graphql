@@ -1,0 +1,101 @@
+type User {
+    id: ID!
+    email: String!
+    firstName: String!
+    lastName: String!
+    jobs: [JobPosition]
+    phone: String
+    avatar: String
+    bitcoinAddress: String
+    birthDate: String
+    address: Address
+}
+
+type JobPosition {
+    id: ID!
+    title: String!
+    company: Company!
+    descriptor: String
+    type: String
+    area: String
+    phone: String
+    email: String
+    startDate: String
+}
+
+type Company {
+    id: ID!
+    name: String!
+    description: String!
+    address: Address
+    phone: String
+    contact: User
+}
+
+type Address {
+    id: ID!
+    streetAddress: String!
+    secondaryAddress: String
+    zipCode: String!
+    city: String!
+    country: String!
+    latitude: Float
+    longitude: Float
+}
+
+input UserInput {
+    id: ID!
+    email: String
+    firstName: String
+    lastName: String
+    phone: String
+    avatar: String
+    bitcoinAddress: String
+    birthDate: String
+}
+
+input JobPositionInput {
+    id: ID!
+    title: String
+    descriptor: String
+    type: String
+    area: String
+    phone: String
+    email: String
+    startDate: String
+}
+
+input CompanyInput {
+    id: ID!
+    name: String
+    description: String
+    phone: String
+}
+
+input AddressInput {
+    id: ID!
+    streetAddress: String
+    secondaryAddress: String
+    zipCode: String
+    city: String
+    country: String
+    latitude: Float
+    longitude: Float
+}
+
+
+type Query {
+    users: [User]
+}
+
+type Mutation {
+    updateAddress(addressInput: AddressInput): Address
+    updateCompany(companyInput: CompanyInput): Company
+    updateJobPosition(jobPositionInput: JobPositionInput): JobPosition
+    updateUser(userInput: UserInput): User
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
