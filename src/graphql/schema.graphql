@@ -1,3 +1,5 @@
+scalar Date
+
 type User {
     id: ID!
     email: String!
@@ -7,7 +9,7 @@ type User {
     phone: String
     avatar: String
     bitcoinAddress: String
-    birthDate: String
+    birthDate: Date
     address: Address
 }
 
@@ -20,7 +22,7 @@ type JobPosition {
     area: String
     phone: String
     email: String
-    startDate: String
+    startDate: Date
 }
 
 type Company {
@@ -51,7 +53,7 @@ input UserInput {
     phone: String
     avatar: String
     bitcoinAddress: String
-    birthDate: String
+    birthDate: Date
 }
 
 input JobPositionInput {
@@ -62,7 +64,7 @@ input JobPositionInput {
     area: String
     phone: String
     email: String
-    startDate: String
+    startDate: Date
 }
 
 input CompanyInput {
