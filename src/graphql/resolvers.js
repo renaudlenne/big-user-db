@@ -3,20 +3,23 @@ const Hashids = require('hashids/cjs');
 
 const hashids = new Hashids();
 const initialSeed = 26;
-const initialPageSize = 10;
+const initialPageSize = 100000;
 
 export default {
   Query: {
-    users() {
-      //TODO pagination
-      return [...Array(initialPageSize)].map((_, i) => {
-        faker.seed(initialSeed+i);
+    users(_, {first, after}) {
+      const pageSize = first || initialPageSize;
+      const firstId = (after && after.startsWith('u.')) ?
+        hashids.decode(after.substring(2))[0] + 1 : 0;
+
+      return [...Array(pageSize)].map((_, i) => {
+        faker.seed(initialSeed+firstId+i);
 
         const firstName = faker.name.firstName(),
           lastName = faker.name.lastName();
 
         return {
-          id: `u.${hashids.encode(i)}`,
+          id: `u.${hashids.encode(firstId+i)}`,
           email: faker.internet.email(firstName, lastName),
           firstName,
           lastName,
