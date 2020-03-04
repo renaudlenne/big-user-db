@@ -32,7 +32,7 @@ export default {
                   must_not: {
                     range: {
                       i: {
-                        gt: firstId,
+                        lte: firstId,
                       }
                     }
                   }
@@ -41,9 +41,7 @@ export default {
             },
           }
         });
-        return esResult.body.hits.hits.map(u => {
-          return user.getByNumericalId(u.id);
-        });
+        return esResult.body.hits.hits.map(u => user.getByNumericalId(u._source.i));
       } else {
         return [...Array(pageSize)].map(async (_, i) => {
           const numericalId = firstId + i;
