@@ -8,6 +8,10 @@ import {indexUser} from "../search/utils";
 
 export default {
   Query: {
+    async user(_, {id}) {
+      return user.getById(id);
+    },
+
     async users(_, {first, after, matching}) {
       const pageSize = first || totalNumberOfUsers;
       const firstId = (after && after.startsWith('u.')) ?

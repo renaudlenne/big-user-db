@@ -87,6 +87,7 @@ input AddressInput {
 
 
 type Query {
+    user(id: ID!): User
     users(first:Int after:ID matching:String): [User]
 }
 
