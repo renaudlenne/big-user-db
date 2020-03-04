@@ -87,7 +87,7 @@ input AddressInput {
 
 
 type Query {
-    users(first:Int after:ID): [User]
+    users(first:Int after:ID matching:String): [User]
 }
 
 type Mutation {

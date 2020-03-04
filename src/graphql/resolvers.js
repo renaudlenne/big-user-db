@@ -1,21 +1,55 @@
-import {hashids, initialPageSize} from '../config';
+import {esClient, hashids, totalNumberOfUsers} from '../config';
 import cache from '../cache';
 import address from '../dao/address';
 import company from '../dao/company';
 import job from '../dao/job';
 import user from '../dao/user';
+import {indexUser} from "../search/utils";
 
 export default {
   Query: {
-    async users(_, {first, after}) {
-      const pageSize = first || initialPageSize;
+    async users(_, {first, after, matching}) {
+      const pageSize = first || totalNumberOfUsers;
       const firstId = (after && after.startsWith('u.')) ?
         hashids.decode(after.substring(2))[0] + 1 : 0;
 
-      return [...Array(pageSize)].map(async (_, i) => {
-        const numericalId = firstId+i;
-        return user.getByNumericalId(numericalId);
-      });
+      if (matching) {
+        const esResult = await esClient.search({
+          index: 'users',
+          size: pageSize,
+          sort: "i:asc",
+          body: {
+            query: {
+              bool: {
+                must: {
+                  match: {
+                    n: {
+                      query: matching,
+                    }
+                  }
+                },
+                ...(firstId ? {
+                  must_not: {
+                    range: {
+                      i: {
+                        gt: firstId,
+                      }
+                    }
+                  }
+                } : {})
+              }
+            },
+          }
+        });
+        return esResult.body.hits.hits.map(u => {
+          return user.getByNumericalId(u.id);
+        });
+      } else {
+        return [...Array(pageSize)].map(async (_, i) => {
+          const numericalId = firstId + i;
+          return user.getByNumericalId(numericalId);
+        });
+      }
     },
   },
 
@@ -50,7 +84,9 @@ export default {
         throw new Error('Incorrect user')
       }
       await cache.set(userId, userInput);
-      return user.getById(userId);
+      const newUser = user.getById(userId);
+      await indexUser(newUser, user.numericalIdFromId(userId));
+      return newUser;
     },
   },
   User: {
