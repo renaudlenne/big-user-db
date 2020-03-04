@@ -1,18 +1,28 @@
 scalar Date
 
+# A user
 type User {
     id: ID!
+
     email: String!
+
     firstName: String!
+
     lastName: String!
+
     jobs: [JobPosition]
+
     phone: String
+
+    # url of its avatar
     avatar: String
+
     bitcoinAddress: String
     birthDate: Date
     address: Address
 }
 
+# A position of a user at a company
 type JobPosition {
     id: ID!
     title: String!
@@ -25,6 +35,7 @@ type JobPosition {
     startDate: Date
 }
 
+# A company
 type Company {
     id: ID!
     name: String!
@@ -34,6 +45,7 @@ type Company {
     contact: User
 }
 
+# An address
 type Address {
     id: ID!
     streetAddress: String!
@@ -87,8 +99,20 @@ input AddressInput {
 
 
 type Query {
+    # Retrieve a single user providing its id
     user(id: ID!): User
-    users(first:Int after:ID matching:String): [User]
+
+    # Retrieve a list of users
+    users(
+        # Number of records to retrieve
+        first:Int
+
+        # Only retrieve users coming after the given one in the default order
+        after:ID
+
+        # Only return users with a name matching the given string
+        matching:String
+    ): [User]
 }
 
 type Mutation {
