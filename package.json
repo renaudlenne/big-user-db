@@ -20,7 +20,7 @@
     "graphql-iso-date": "^3.6.1",
     "hashids": "^2.2.1",
     "ioredis": "^4.16.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "persistent-cache": "^1.1.1"
   },
   "engines": {
