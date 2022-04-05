@@ -25,7 +25,7 @@ const getByNumericalId = async (numId) => {
     firstName,
     lastName,
     phone: faker.phone.phoneNumber(),
-    avatar: faker.image.avatar(),
+    avatar: `https://i.pravatar.cc/300?u=${userId}`,
     bitcoinAddress: faker.finance.bitcoinAddress(),
     birthDate: faker.date.past(50, new Date(2020, 2, 1)),
   };
