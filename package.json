@@ -17,6 +17,7 @@
     "babel-plugin-import-graphql": "^2.7.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "graphql": "^0.13.0",
     "graphql-iso-date": "^3.6.1",
     "hashids": "^2.2.1",
     "ioredis": "^4.16.0",
