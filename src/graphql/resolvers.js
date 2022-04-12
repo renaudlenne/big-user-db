@@ -85,8 +85,9 @@ export default {
       if (!userId || !userId.startsWith('u.')) {
         throw new Error('Incorrect user')
       }
-      await cache.set(userId, userInput);
-      const newUser = user.getById(userId);
+      const cachedUser = await cache.get(userId) || {};
+      await cache.set(userId, {...cachedUser, ...userInput});
+      const newUser = await user.getById(userId);
       await indexUser(newUser, user.numericalIdFromId(userId));
       return newUser;
     },
