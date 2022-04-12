@@ -21,7 +21,15 @@ router.post('/',
     if(last <= first) {
       throw new Error("Invalid parameters");
     }
+
     req.setTimeout(60*60*1000);
+    await esClient.deleteByQuery(
+      {
+        index: 'users',
+        body: {
+          query: { match_all: {}}
+        }
+      });
     for (let i = first ; i < last ; i++) {
       const thisUser = await user.getByNumericalId(i);
       await indexUser(thisUser, i);
